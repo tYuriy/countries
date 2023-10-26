@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
+// import { type } from 'os';
 import './App.css';
+import { Main } from './components/Main';
+import { Test } from './components/Test';
+import { useEffect, useState } from 'react';
+import { Country } from './types/Country';
 
-function App() {
+const BASE_URL = 'https://restcountries.com/v3.1/all';
+
+export function App() {
+  const [countries, setCountries] = useState<Country[]>([])
+
+  useEffect(() => {
+    const fetchCountries =async () => {
+      const response = await fetch(`${BASE_URL}`);
+      const counties = await response.json() as Country[];
+      setCountries(counties);
+    }
+
+    fetchCountries();
+  }, [])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Main/>
+      <Test countries={countries}/>
     </div>
   );
 }
 
-export default App;
+// export default App;
